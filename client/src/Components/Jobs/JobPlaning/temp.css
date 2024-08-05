@@ -1,0 +1,9 @@
+.timerOn {
+    display: block;
+    background-color: aquamarine;
+}
+
+.timerOff {
+    display: none;
+    background-color: burlywood;
+}
