@@ -1466,6 +1466,7 @@ const getFirstTimerState = async () => {
       },
       cellEditor: "agSelectCellEditor",
       cellEditorParams: {
+        
         values: projectFNames && projectFNames.map((option) => option.label),
       },
       floatingFilterComponent: "selectFloatingFilter",
@@ -1800,7 +1801,7 @@ const getFirstTimerState = async () => {
       editable: false,
       
       cellRendererSelector: (params) => {
-        console.log(params)
+        //console.log(params)
         if(timerOn && taskId === params.data._id) {
           params.setValue('timer')
           return {
@@ -1844,7 +1845,12 @@ const getFirstTimerState = async () => {
 
   const onCellValueChanged = useCallback(
     (event) => {
-      console.log('cell value changed')
+
+      // console.log('cell value changed', event)
+      // const rowNode = gridRef.current.api.getRowNode(event.node.id);
+      // rowNode.setDataValue('Jobholder_id', 'newprrrrrrrrrrr')
+
+
       if (event.colDef.field === "Jobholder_id") {
         const selectedOption = fPreData.find(
           (option) => option.label === event.data.Jobholder_id
@@ -1906,7 +1912,17 @@ const getFirstTimerState = async () => {
       );
       // setLoader(true)
 
+      //console.log(event)
+
+      console.log('row value changed', event)
+      const rowNode = gridRef.current.api.getRowNode(event.node.id);
+      console.dir(rowNode)
+      rowNode.setData(data)
+
+
       
+
+
       // setReRender2(i);
       // i = i + 1;
     } catch (err) {}
