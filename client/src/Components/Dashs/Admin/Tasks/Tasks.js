@@ -1844,6 +1844,7 @@ const getFirstTimerState = async () => {
 
   const onCellValueChanged = useCallback(
     (event) => {
+      console.log('cell value changed')
       if (event.colDef.field === "Jobholder_id") {
         const selectedOption = fPreData.find(
           (option) => option.label === event.data.Jobholder_id
@@ -1878,6 +1879,7 @@ const getFirstTimerState = async () => {
   var i = 1;
 
   const onRowValueChanged = useCallback(async (event) => {
+    console.log('row value changed')
     var data = event.data;
     try {
       const token = secureLocalStorage.getItem("token");
@@ -1903,8 +1905,10 @@ const getFirstTimerState = async () => {
         }
       );
       // setLoader(true)
-      setReRender2(i);
-      i = i + 1;
+
+      
+      // setReRender2(i);
+      // i = i + 1;
     } catch (err) {}
   }, []);
 
