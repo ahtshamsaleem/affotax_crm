@@ -4,9 +4,9 @@ export default function TimerFilter(params) {
   const { mainRowData, setRowData } = params;
 
   const clickHandler = (e) => {
-    let a = localStorage.getItem("filter_task_id");
+    let running_timer_job_id = localStorage.getItem("filter_job_id");
     if (e.target.checked) {
-      const result = mainRowData.filter((el) => a === el._id);
+      const result = mainRowData.filter((el) => running_timer_job_id === el._id);
       setRowData(result);
     } else {
       setRowData(mainRowData);

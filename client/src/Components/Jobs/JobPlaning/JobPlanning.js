@@ -39,6 +39,7 @@ import { FaStopCircle } from "react-icons/fa";
 import { v4 as uuidv4 } from 'uuid';
 
 import NotesModal from "./NotesModal";
+import TimerFilter from './TimerFilter';
 
 
 
@@ -1397,6 +1398,9 @@ const submitNotesModalHandler = async () => {
 
       setClientId(state.data.job_id)
 
+
+      localStorage.setItem('filter_job_id', state.data.job_id)
+
       const startTime = new Date(state.data.startTime);
       const curTime = new Date();
   
@@ -1619,9 +1623,7 @@ const ReactTimerComponent = (params) => {
              {/* {formatTime(time)} */}
 
 
-             {
-              params.setValue('timer')
-             }
+             
                
            
 
@@ -1771,7 +1773,7 @@ const ReactTimerComponent = (params) => {
 
         if (response.status === 200) {
 
-          
+          localStorage.setItem('filter_job_id', jobId)
           
           setClientId(jobId);
 
@@ -2287,6 +2289,13 @@ const ReactTimerComponent = (params) => {
       field: "timer",
       flex: clientId ? 4 : 2,
       editable: 'false',
+
+      floatingFilterComponent: TimerFilter,
+      floatingFilterComponentParams: {
+        mainRowData: mainrowData,
+        setRowData: setRowData,
+    },
+
      
       cellRendererFramework: React.memo(ReactTimerComponent)
     },

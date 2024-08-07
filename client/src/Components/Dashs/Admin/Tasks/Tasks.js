@@ -1212,7 +1212,7 @@ const Tasks = (props) => {
 
 
 // CLICK HANDLERS   | TIMER START
-const tempRef = useRef()
+
 
 
 const handleStart = async (task_Id) => {
@@ -1232,8 +1232,6 @@ const handleStart = async (task_Id) => {
     setTimerLoader(true);
     const response = await axios.post( axiosURL.timerStartStopUrl, { data: formData, }, { headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` } } );
     if (response.status === 200) {
-
-      console.log(task_Id)
 
       localStorage.setItem('filter_task_id', task_Id)
 
@@ -1811,14 +1809,11 @@ const getFirstTimerState = async () => {
 
       floatingFilterComponent: TimerFilter,
       floatingFilterComponentParams: {
-        taskId: taskId,
         mainRowData: mainRowData,
         setRowData: setRowData,
-        tempRef: tempRef
     },
 
       cellRendererSelector: (params) => {
-        console.log(params)
          
         if(timerOn && taskId === params.data._id) {
           //params.setValue('timer')
