@@ -2294,6 +2294,7 @@ const ReactTimerComponent = (params) => {
       floatingFilterComponentParams: {
         mainRowData: mainrowData,
         setRowData: setRowData,
+        rowData: rowData
     },
 
      

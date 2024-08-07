@@ -1,15 +1,20 @@
 import React from "react";
 
 export default function TimerFilter(params) {
-  const { mainRowData, setRowData } = params;
+  const { rowData, setRowData } = params;
 
   const clickHandler = (e) => {
+
+
+    console.log(params)
+
+
     let running_timer_job_id = localStorage.getItem("filter_job_id");
     if (e.target.checked) {
-      const result = mainRowData.filter((el) => running_timer_job_id === el._id);
+      const result = rowData.filter((el) => running_timer_job_id === el._id);
       setRowData(result);
     } else {
-      setRowData(mainRowData);
+      setRowData(rowData);
     }
   };
 
