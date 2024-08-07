@@ -32,6 +32,7 @@ import secureLocalStorage from "react-secure-storage";
 import { FaPlayCircle } from "react-icons/fa";
 import { FaStopCircle } from "react-icons/fa";
 import NotesModal from "../../../Jobs/JobPlaning/NotesModal";
+import TimerFilter from "./TimerFilter";
 
 const token = secureLocalStorage.getItem("token");
 
@@ -1211,7 +1212,7 @@ const Tasks = (props) => {
 
 
 // CLICK HANDLERS   | TIMER START
-
+const tempRef = useRef()
 
 
 const handleStart = async (task_Id) => {
@@ -1225,10 +1226,16 @@ const handleStart = async (task_Id) => {
     task_id: task_Id,
   };
 
+
+
   try {
     setTimerLoader(true);
     const response = await axios.post( axiosURL.timerStartStopUrl, { data: formData, }, { headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` } } );
     if (response.status === 200) {
+
+      console.log(task_Id)
+
+      localStorage.setItem('filter_task_id', task_Id)
 
       setTaskId(task_Id);
       setTimerOn(true);
@@ -1365,6 +1372,8 @@ const getFirstTimerState = async () => {
     
     if(state.data.startTime && !state.data.endTime) {
       setTaskId(state.data.task_id)
+
+      localStorage.setItem('filter_task_id', state.data.task_id)
 
       const startTime = new Date(state.data.startTime);
       const curTime = new Date();
@@ -1799,22 +1808,38 @@ const getFirstTimerState = async () => {
       headerName: 'Timer',
       field: 'timer',
       editable: false,
-      
+
+      floatingFilterComponent: TimerFilter,
+      floatingFilterComponentParams: {
+        taskId: taskId,
+        mainRowData: mainRowData,
+        setRowData: setRowData,
+        tempRef: tempRef
+    },
+
       cellRendererSelector: (params) => {
-        //console.log(params)
+        console.log(params)
+         
         if(timerOn && taskId === params.data._id) {
-          params.setValue('timer')
+          //params.setValue('timer')
           return {
             component: () => <div style={{display: 'flex',  alignItems: 'center', gap: '0.5rem', marginLeft: '0.5rem'}}><button  type="submit" style={{backgroundColor: 'transparent', border: 'none' }}> <FaStopCircle style={{ display: "flex", alignItems: "center", justifyContent: "center", scale: '1.5', color: '#D40000' }} onClick={() => setShowNotesModal(true)} /> </button><p style={{ fontSize: "14px", fontWeight: "600", }} ref={timeRef}>  </p></div> 
           }
         } else {
+          //params.setValue('')
             return {
               component: () => <button disabled={timerOn} type="submit" style={{backgroundColor: 'transparent', border: 'none', marginLeft: '0.5rem' }}> <FaPlayCircle style={{ display: "flex", alignItems: "center", justifyContent: "center", scale: '1.5', color: '#11B2EA', cursor: `${timerOn ? 'not-allowed' : 'pointer'}` }} onClick={() => handleStart(params.data._id)} /> </button>
+                
+              
             }
         }
       }
     }
 
+
+
+
+   
 
 
 
@@ -1914,9 +1939,9 @@ const getFirstTimerState = async () => {
 
       //console.log(event)
 
-      console.log('row value changed', event)
+      //console.log('row value changed', event)
       const rowNode = gridRef.current.api.getRowNode(event.node.id);
-      console.dir(rowNode)
+      //console.dir(rowNode)
       rowNode.setData(data)
 
 
