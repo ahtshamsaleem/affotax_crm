@@ -312,7 +312,7 @@ exports.CopyOneProject = async (req, res) => {
 
   const projects = await ProjectDb.findById(id);
 
-  await ProjectDb.create({
+  const CopiedTaskDoc = await ProjectDb.create({
     projectname_id: projects.projectname_id,
     startDate: projects.startDate,
     deadline: projects.deadline,
@@ -321,9 +321,11 @@ exports.CopyOneProject = async (req, res) => {
     hrs: projects.hrs,
     job_date: projects.job_date,
     lead: projects.lead,
-  }).then(
-    res.status(200).json({
-      message: "Project Added Successfully",
-    })
-  );
+  });
+
+  console.log(CopiedTaskDoc)
+  res.status(200).json({
+    message: "Project Added Successfully",
+    id: CopiedTaskDoc._id
+  })
 };

@@ -1168,6 +1168,11 @@ const Tasks = (props) => {
   const handleDeleteProject = async (projId) => {
     // setLoader(true)
 
+    if (timerOn) {
+      return;
+    }
+
+
     const confirmed = window.confirm(
       "Are you sure you want to delete this item?"
     );
@@ -1180,31 +1185,41 @@ const Tasks = (props) => {
         });
       } catch (err) {}
 
-      setReRender((prev) => !prev);
+      //setReRender((prev) => !prev);
     }
   };
 
   const handleCopyProject = async (projId, projData) => {
     // setLoader(true)
 
-    const copiedProj = {
-      projectname_id: projData.projectname_id,
-      startDate: projData.startDate,
-      deadline: projData.deadline,
-      Jobholder_id: projData.Jobholder_id,
-      status: "Progress",
-      _id: `${projData._id}1001`,
-    };
-    setRowData((prev) => [...prev, copiedProj]);
+    
     try {
-      await axios.get(`${ProjCopyUrl}/${projId}`, {
+      const { data } = await axios.get(`${ProjCopyUrl}/${projId}`, {
         headers: { "Content-Type": "application/json" },
       });
+
+      console.log(data)
+
+      const copiedProj = {
+        projectname_id: projData.projectname_id,
+        startDate: projData.startDate,
+        deadline: projData.deadline,
+        Jobholder_id: projData.Jobholder_id,
+        status: "Progress",
+        //_id: `${projData._id}1001`,
+        _id: data.id
+      };
+
+      setRowData((prev) => [...prev, copiedProj]);
+
+      // can be improve here 
+
+
     } catch (err) {
       //
     }
 
-    setReRender((prev) => !prev);
+    //setReRender((prev) => !prev);
   };
 
 
@@ -1316,22 +1331,22 @@ useEffect(() => {
     return;
   }
 
-  
   if (timerOn) {
     let interval;
     let timeSpend = time;
-
+    
     interval = setInterval(() => {
       
       if(timeRef.current) {
+        
         timeRef.current.innerText = formatTime(timeSpend);
       }
 
-      // if (timerOn) {
-      //   document.title = showTime + " | " + 'Affotax';
-      // } else {
-      //   document.title = "Affotax";
-      // }
+      if (timerOn) {
+        document.title = formatTime(timeSpend) + " | " + 'Affotax'; 
+      } else {
+        document.title = "Affotax";
+      }
 
       timeSpend++;
       
@@ -1717,7 +1732,7 @@ const getFirstTimerState = async () => {
     {
       headerName: "Action",
       field: "delete",
-      flex: 0.8,
+      flex: 1,
       cellRendererFramework: (params) => (
         <>
           <Link
@@ -1811,6 +1826,7 @@ const getFirstTimerState = async () => {
       floatingFilterComponentParams: {
         mainRowData: mainRowData,
         setRowData: setRowData,
+        rowData: rowData
     },
 
       cellRendererSelector: (params) => {

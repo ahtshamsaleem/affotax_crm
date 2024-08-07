@@ -1,9 +1,13 @@
 import React from "react";
 
 export default function TimerFilter(params) {
-  const { mainRowData, setRowData } = params;
+  const { mainRowData, setRowData, rowData } = params;
 
   const clickHandler = (e) => {
+
+    console.log(params)
+
+
     let a = localStorage.getItem("filter_task_id");
     if (e.target.checked) {
       const result = mainRowData.filter((el) => a === el._id);
