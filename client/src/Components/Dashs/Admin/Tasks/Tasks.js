@@ -1168,9 +1168,9 @@ const Tasks = (props) => {
   const handleDeleteProject = async (projId) => {
     // setLoader(true)
 
-    if (timerOn) {
-      return;
-    }
+    // if (timerOn) {
+    //   return;
+    // }
 
 
     const confirmed = window.confirm(
