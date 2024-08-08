@@ -1165,13 +1165,25 @@ const Tasks = (props) => {
   //   }
   // }, rowData)
 
+
+
+
+
+
+
+
+
+
+
+
   const handleDeleteProject = async (projId) => {
     // setLoader(true)
 
-    // if (timerOn) {
-    //   return;
-    // }
+    if (timerOn && projId === taskId) {
+      return;
+    }
 
+    
 
     const confirmed = window.confirm(
       "Are you sure you want to delete this item?"
@@ -1179,6 +1191,11 @@ const Tasks = (props) => {
     if (confirmed) {
       const filteredArray = rowData.filter((obj) => obj._id !== projId);
       setRowData(filteredArray);
+
+      const filteredArrayMain = mainRowData.filter((obj) => obj._id !== projId);
+      setMainRowData(filteredArrayMain);
+
+
       try {
         await axios.get(`${ProjDeleteUrl}/${projId}`, {
           headers: { "Content-Type": "application/json" },
@@ -1189,28 +1206,53 @@ const Tasks = (props) => {
     }
   };
 
-  const handleCopyProject = async (projId, projData) => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const handleCopyProject = async (projId, projData, params) => {
     // setLoader(true)
 
-    
+    console.log(gridRef.current)
+
     try {
       const { data } = await axios.get(`${ProjCopyUrl}/${projId}`, {
         headers: { "Content-Type": "application/json" },
       });
 
-      console.log(data)
+      //console.log(projData)
+
+      // const copiedProj = {
+      //   projectname_id: projData.projectname_id,
+      //   startDate: projData.startDate,
+      //   deadline: projData.deadline,
+      //   Jobholder_id: projData.Jobholder_id,
+      //   status: "Progress",
+      //   //_id: `${projData._id}1001`,
+      //   _id: data.id
+      // };
+
 
       const copiedProj = {
-        projectname_id: projData.projectname_id,
-        startDate: projData.startDate,
-        deadline: projData.deadline,
-        Jobholder_id: projData.Jobholder_id,
-        status: "Progress",
-        //_id: `${projData._id}1001`,
+        ...projData,
         _id: data.id
-      };
+      }
+
+      //console.log(copiedProj)
 
       setRowData((prev) => [...prev, copiedProj]);
+      setMainRowData((prev) => [...prev, copiedProj]);
 
       // can be improve here 
 
@@ -1737,7 +1779,7 @@ const getFirstTimerState = async () => {
         <>
           <Link
             onClick={() => {
-              handleCopyProject(params.data._id, params.data);
+              handleCopyProject(params.data._id, params.data, params);
             }}
             style={{
               all: "unset",

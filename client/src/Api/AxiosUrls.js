@@ -1,7 +1,7 @@
 //BaseUrl
-export const BaseUrl = "https://crm-affotax.com/api/";
+//export const BaseUrl = "https://crm-affotax.com/api/";
 // export const BaseUrl = "http://192.168.1.6:5000/api/";
-//export const BaseUrl = "http://localhost:5000/api/";
+export const BaseUrl = "http://localhost:5000/api/";
 // export const BaseUrl = "https://backaffotax.robbito.com/api/";
 
 //Auth / Users
